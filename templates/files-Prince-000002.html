@@ -1,0 +1,227 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛜Video Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+        }
+      
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: #333;
+            color: white;
+            position: fixed;
+            height: 100vh;
+            left: -250px;
+            transition: 0.3s ease-in-out;
+            padding: 20px;
+            z-index: 100;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px;
+            display: block;
+            transition: 0.2s;
+        }
+
+        .sidebar ul li a:hover {
+            background: #444;
+        }
+
+        #open-sidebar {
+            font-size: 18px;
+            padding: 10px;
+            border: none;
+            background: #008CBA;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+            position: fixed;
+            left: 10px;
+            top: 10px;
+            z-index: 101;
+        }
+
+        /* Video Grid */
+        .content-wrapper {
+            flex: 1;
+            padding: 20px;
+            margin-left: 250px;
+        }
+
+        .video-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1400px;
+            margin: auto;
+        }
+
+        .video-card {
+            background: white;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: scale(1.05);
+        }
+
+        .video-card video, .video-card img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .video-meta {
+            padding: 10px;
+            background-color: #151010;
+            color: white;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        /* Upload Form */
+        .upload-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .upload-container input, .upload-container textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .upload-container button {
+            margin-top: 20px;
+            width: 100%;
+            background-color: #155d27;
+            color: white;
+            font-size: 1.1em;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+        }
+
+        .upload-container button:hover {
+            background-color: #28a745;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 1024px) {
+            .video-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .content-wrapper {
+                margin-left: 0;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .video-container {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                left: -250px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Toggle -->
+    <button id="open-sidebar">Menu</button>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        <h2>{{ user.username }}</h2>
+        <ul>
+            <li><a href="{% url 'dashboard' %}">Upload</a></li>
+            <li><a href="{% url 'files' %}">Files</a></li>
+            <li><a href="{% url 'profile' %}">Profile</a></li>
+            <li><a href="{% url 'update_settings' %}">Settings</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="content-wrapper">
+        <!-- Upload Form -->
+       
+
+        <!-- Video Grid -->
+        <div class="video-container">
+            {% for upload in uploads %}
+                <div class="video-card">
+                    {% if upload.file_choose.url|lower|slice:"-4:" == ".mp4" %}
+                        <video controls>
+                            <source src="{{ upload.file_choose.url }}" type="video/mp4">
+                        </video>
+                    {% elif upload.file_choose.url|lower|slice:"-4:" == ".jpg" or upload.file_choose.url|lower|slice:"-4:" == ".png" %}
+                        <img src="{{ upload.file_choose.url }}" alt="Image">
+                    {% endif %}
+                    <div class="video-meta">
+                        <h4>{{ upload.title }}</h4>
+                        <p>{{ upload.description }}</p>
+                        <small>Uploaded by {{ user.username }}</small>
+                        <button style="border-radius: 50%; height: 20px; width: 20px;">👍</button>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No uploads yet—start sharing!</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Sidebar Toggle Script -->
+    <script>
+        const openSidebar = document.getElementById('open-sidebar');
+        const sidebar = document.getElementById('sidebar');
+
+        openSidebar.addEventListener('click', () => {
+            sidebar.style.left = (sidebar.style.left === "0px") ? "-250px" : "0px";
+        });
+    </script>
+
+</body>
+</html>

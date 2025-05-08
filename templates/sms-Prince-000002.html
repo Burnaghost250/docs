@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>🛜Email...</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+         
+        }
+        .container {
+            max-width: 600px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .header {
+            background-color: #007bff;
+            color: white;
+            font-size: 20px;
+            padding: 10px;
+            border-radius: 5px 5px 0 0;
+        }
+        .content {
+            padding: 20px;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            color: #888;
+        }
+        .button {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="text"], input[type="email"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+   
+</body>
+</html>{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Email Notification</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-image: url('{% static "images/userback.jpg" %}');
+            background-position: center;
+            background-size: cover;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: #333;
+            color: white;
+            position: fixed;
+            height: 100vh;
+            left: -250px;
+            transition: 0.3s ease-in-out;
+            padding: 20px;
+            z-index: 100;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px;
+            display: block;
+            transition: 0.2s;
+        }
+
+        .sidebar ul li a:hover {
+            background: #444;
+        }
+
+        #open-sidebar {
+            font-size: 18px;
+            padding: 10px;
+            border: none;
+            background: #008CBA;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        /* Email Form */
+        .container {
+            max-width: 600px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Toggle -->
+    <button id="open-sidebar">Menu</button>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h1>{{ user.username }}👻</h1>
+        <ul>
+            <li><a href="{% url 'dashboard' %}">Upload</a></li>
+            <li><a href="{% url 'files' %}">Files</a></li>
+            <li><a href="{% url 'profile' %}">Profile</a></li>
+            <li><a href="{% url 'update_settings' %}">Settings</a></li>
+            <li><a href="{% url 'sms' %}">sms</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Email Form -->
+    <div class="container">
+        <h1>Hello, {{ user.username }}!</h1>
+        <p>Message us for more concerns</p>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="" placeholder="Your Name" required><br>
+            <input type="email" name="" placeholder="Your Email" required><br>
+            <textarea name="" placeholder="Your Message" required></textarea><br>
+            <input type="submit" value="Submit">
+        </form>
+        {% if success %}
+            <p style="color:green;">Message sent successfully!</p>
+        {% endif %}
+    </div>
+
+    <!-- Sidebar Toggle Script -->
+    <script>
+        const openSidebar = document.getElementById('open-sidebar');
+        const sidebar = document.getElementById('sidebar');
+
+        openSidebar.addEventListener('click', () => {
+            sidebar.style.left = (sidebar.style.left === "0px") ? "-250px" : "0px";
+        });
+    </script>
+
+</body>
+</html>
+

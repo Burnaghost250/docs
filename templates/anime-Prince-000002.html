@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛜Loading...</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: black;
+        }
+        h1 {
+            color: white;
+            font-size: 4rem;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="elite" style="font-size: 70px;">Elite</h1>
+    
+    <script>
+        setTimeout(() => {
+    document.getElementById("elite").style.opacity = 1;
+    "elite".color="green";
+}, 1000);
+setTimeout(() => {
+    window.location.href = "{% url 'home' %}"; // Change this to the actual homepage URL
+}, 10000);
+    </script>
+</body>
+</html>

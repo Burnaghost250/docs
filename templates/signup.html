@@ -1,0 +1,152 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛜Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("{% static 'images/signup.jpg' %}"); /* Updated to use static tag */
+            background-position: center;
+            background-size: cover;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .signup-container {
+            background-image: url('{% static "images/signuppage.jpg" %}'); /* Updated static tag */
+            border-radius: 10px;
+            background-position: center;
+            background-size: cover;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            width: 100%;
+            border: 2px solid #25d366;
+            max-width: 400px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .signup-container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #25d366;
+            animation: slideInFromTop 0.8s ease-out;
+        }
+
+        @keyframes slideInFromTop {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #25d366;
+            box-shadow: 0 0 8px rgba(37, 211, 102, 0.5);
+        }
+
+        button {
+            background-color: #25d366;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 95%;
+            margin-top: 20px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #1ebc57;
+            transform: scale(1.1);
+        }
+
+        p {
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        a {
+            color: #25d366;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        form a:hover {
+            color: #033cf8;
+        }
+
+        input:hover {
+            border: 2px solid #5069ba;
+            transition: border 0.3s ease;
+        }
+        .image{
+            display: block;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <h1>Sign Up</h1>
+        <form action="{% url 'signup' %}" method="POST">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Full Name" required autocomplete="off">
+        
+            <input type="email" name="email" placeholder="Email Address" required autocomplete="off">
+            <input type="password" name="password" placeholder="Password" required autocomplete="off">
+            <input type="password" name="conf_password" placeholder="Confirm Password" required autocomplete="off">
+            {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                        <p style="color:red;text-align: center;">{{ message }}</p>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <button type="submit">Sign Up</button>
+        </form>
+        <p style="color: white;"> Already have an account? <a href="{% url 'login' %}" style="color:red;">Log In</a></p>
+        <em><a href="{% url 'privacy' %}">Policy</a></em>
+    </div>
+</body>
+</html>
